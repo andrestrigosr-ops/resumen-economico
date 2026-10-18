@@ -1,0 +1,45 @@
+<!doctype html>
+<html lang="es">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<meta name="robots" content="noindex">
+<title>Resumen económico diario</title>
+
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Newsreader:opsz,wght@6..72,600&family=Figtree:wght@400;600&display=swap">
+<style>
+/* Una columna estrecha para leer en el celular: fecha, lista de ítems con etiqueta y enlace */
+:root{
+  --bg:#f6f7f5; --fg:#1d2420; --muted:#5f6b64; --line:#dde2de; --accent:#1f6b52; --tag:#e6efe9; --onaccent:#ffffff; --warn:#8a4b12;
+  --display:"Newsreader",Georgia,serif; --body:"Figtree",system-ui,sans-serif;
+}
+@media (prefers-color-scheme:dark){:root:not([data-theme="light"]){--bg:#141916;--fg:#e4e9e5;--muted:#9aa7a0;--line:#2b332e;--accent:#6fc4a3;--tag:#1f2a24;--onaccent:#0f1512;--warn:#e0a76a;color-scheme:dark}}
+:root[data-theme="dark"]{--bg:#141916;--fg:#e4e9e5;--muted:#9aa7a0;--line:#2b332e;--accent:#6fc4a3;--tag:#1f2a24;--onaccent:#0f1512;--warn:#e0a76a;color-scheme:dark}
+body{margin:0;background:var(--bg);color:var(--fg);font-family:var(--body);font-size:16px;line-height:1.5;
+  padding-left:max(16px,env(safe-area-inset-left,0px));padding-right:max(16px,env(safe-area-inset-right,0px));padding-block:24px 40px}
+main{max-width:640px;margin:0 auto}
+h1{font-family:var(--display);font-weight:600;font-size:1.7rem;line-height:1.15;margin:0;text-wrap:balance}
+.fecha{color:var(--muted);font-size:.9rem;margin:4px 0 20px}
+ol{list-style:none;margin:0;padding:0;display:flex;flex-direction:column}
+li{padding:14px 0;border-top:1px solid var(--line);min-width:0}
+.tag{display:inline-block;font-size:.72rem;font-weight:600;letter-spacing:.06em;text-transform:uppercase;color:var(--accent);background:var(--tag);padding:2px 7px;border-radius:4px;margin-bottom:6px}
+li p{margin:0}
+li a{color:var(--accent);font-weight:600;text-decoration:underline;text-underline-offset:2px;word-break:break-word}
+li a:focus-visible{outline:2px solid var(--accent);outline-offset:2px}
+.nota{color:var(--muted);font-size:.85rem;margin-top:20px;border-top:1px solid var(--line);padding-top:12px}
+</style>
+</head>
+<body>
+<main>
+<!-- INICIO CONTENIDO -->
+  <h1>Resumen económico</h1>
+  <p class="fecha">Domingo 18 de octubre de 2026 · columnas de opinión de la edición dominical</p>
+  <ol>
+    <li><span class="tag">Sin novedades</span>
+      <p>No encontré ninguna columna económica de la edición dominical del 18 de octubre que pudiera confirmar y que pase el filtro de valor. Revisé las secciones de opinión de El Tiempo, El Espectador, El Colombiano y Portafolio.</p></li>
+  </ol>
+  <p class="nota">Problemas de acceso. Los índices de opinión de El Tiempo y El Espectador todavía no mostraban la tanda del domingo, y El Tiempo devolvió error al abrir sus notas del 17 y 18 de octubre. Por eso no pude leer, entre otras, la columna de Thierry Ways «Quesos, drones y geopolítica» (fechada el 17/10) ni el editorial «No normalizar el saqueo». Portafolio y La República no publican edición de domingo. Hay una columna valiosa que quedó por fuera porque es de la edición del sábado: <a href="https://www.eltiempo.com/opinion/columnistas/acelerar-el-ajuste-economico-3594163">Carlos Caballero Argáez, «Acelerar el ajuste económico» (El Tiempo, 16/10)</a>. Proyecta un déficit de 7,2% del PIB en 2026 y de 9,3% en 2027, con la deuda cerca del 65%, y pide una «ley de rescate» fiscal. Puede entrar en el resumen del lunes.</p>
+<!-- FIN CONTENIDO -->
+</main>
+</body>
+</html>
