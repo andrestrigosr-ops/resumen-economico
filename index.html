@@ -148,6 +148,7 @@ li.es-importante{box-shadow:inset 4px 0 0 var(--red),var(--shadow)}
 .cta-btn .ico{width:18px;height:18px}
 .cta-btn:hover,.cta-btn:focus-visible{outline:2px solid var(--ink);outline-offset:2px}
 .cta+.ia{margin-top:24px}
+li.destacada{outline:3px solid var(--mint);outline-offset:3px}
 </style>
 </head>
 <body>
@@ -296,6 +297,7 @@ li.es-importante{box-shadow:inset 4px 0 0 var(--red),var(--shadow)}
     });
     guardarVistos(vistos);
     botonesCompartir();
+    irAlAncla();
     pintarFiltros(cuenta);
     aplicarFiltro();
     tiempoRelativo();
@@ -339,13 +341,26 @@ li.es-importante{box-shadow:inset 4px 0 0 var(--red),var(--shadow)}
   var URL_PAG="https://economiahoy.margeninsights.com/";
   var WA='<svg class="ico" viewBox="0 0 24 24" aria-hidden="true"><path d="M20 12a8 8 0 0 1-11.8 7L4 20l1.1-4A8 8 0 1 1 20 12z"/><path d="M9 9.5c0 3 2.5 5.5 5.5 5.5l1-1.5-2-1-1 .8a4 4 0 0 1-2-2l.8-1-1-2z"/></svg>';
   function linkWA(txt){return "https://wa.me/?text="+encodeURIComponent(txt);}
+  function huellaId(t){var h=0;for(var i=0;i<t.length;i++){h=(h*31+t.charCodeAt(i))|0;}return (h>>>0).toString(36);}
+  function irAlAncla(){
+    var h=location.hash.slice(1); if(!/^n[0-9a-z]+$/.test(h)) return;
+    var li=document.getElementById(h); if(!li) return;
+    if(li.classList.contains("plegable")&&!li.classList.contains("abierta")){var tt=li.querySelector(".titular"); if(tt) tt.click();}
+    li.classList.add("destacada"); setTimeout(function(){li.scrollIntoView({behavior:"smooth",block:"center"});},150);
+  }
+  window.addEventListener("hashchange",function(){irAlAncla();});
   function botonesCompartir(){
     document.querySelectorAll("#contenido ol > li").forEach(function(li){
       if(li.querySelector(".compartir")) return;
       var t=li.querySelector(".titular"), p=li.querySelector("p");
-      var base=t?t.textContent.trim():(p?p.textContent.trim().slice(0,160)+"…":"");
+      var titulo=t?t.textContent.trim():"";
+      var fuente=p?p.querySelector("a"):null;
+      var detalle="";
+      if(p){var c=p.cloneNode(true); c.querySelectorAll("a").forEach(function(x){x.remove();}); detalle=c.textContent.replace(/\s+/g," ").trim().replace(/[\s·,;:]+$/,"");}
+      var id=li.id||("n"+huellaId(titulo||detalle)); li.id=id;
+      var msg=(titulo?"*"+titulo+"*\n\n":"")+(detalle?detalle+"\n\n":"")+(fuente?"Fuente: "+fuente.textContent.trim()+"\n"+fuente.href+"\n\n":"")+"Vía Economía Hoy · Margen Insights\n"+URL_PAG+"#"+id;
       var a=document.createElement("a"); a.className="compartir"; a.target="_blank"; a.rel="noopener";
-      a.href=linkWA(base+"\n\nEconomía Hoy · Margen Insights\n"+URL_PAG);
+      a.href=linkWA(msg);
       a.innerHTML=WA+"<span>Compartir</span>"; li.appendChild(a);
     });
     var f=document.querySelector("#contenido .fecha");
