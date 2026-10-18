@@ -227,7 +227,7 @@ li.plegable .titular:focus-visible{outline:2px solid var(--mintdeep);outline-off
       if (a < 0 || b < 0) throw new Error("sin marcas");
       document.getElementById("contenido").innerHTML = html.slice(a, b + 22);
       if (window.pintarEtiquetas) pintarEtiquetas();
-      decir("Listo. Este es el resumen recién actualizado.");
+      decir("Resumen actualizado.");
       history.replaceState(null, "", location.pathname);
     });
   }
@@ -245,7 +245,7 @@ li.plegable .titular:focus-visible{outline:2px solid var(--mintdeep);outline-off
       else setTimeout(revisar, CADA);
     });
   }
-  decir("Actualizando el resumen. Suele tardar entre 1 y 5 minutos; esta página se refresca sola.");
+  decir("Actualizando el resumen");
   setTimeout(revisar, 15000);
 })();
 </script>
