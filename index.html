@@ -101,7 +101,7 @@ li.plegable.abierta .titular::after{transform:rotate(-135deg);margin-top:10px}
 li.plegable p{margin-top:10px}
 li.plegable .titular:focus-visible{outline:2px solid var(--mintdeep);outline-offset:4px;border-radius:6px}
 .fecha .rel{display:block;color:var(--ink);font-weight:800}
-.fecha .abs{display:block;font-weight:600;font-size:.8rem;opacity:.8}
+.fecha .abs{display:block;font-weight:600;font-size:.7rem;opacity:.75;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
 .compartir{display:inline-flex;align-items:center;gap:6px;margin-top:12px;padding:6px 12px;border-radius:999px;background:var(--mintsoft);color:var(--mintdeep);font:700 .8rem/1 var(--body);text-decoration:none}
 .compartir:hover,.compartir:focus-visible{background:var(--mint);color:#131030;outline:none}
 li.plegable .compartir{display:none}
@@ -114,7 +114,7 @@ li.es-importante{box-shadow:inset 4px 0 0 var(--red),var(--shadow)}
 .chip.c-importante.activo{background:var(--red);color:var(--onred);border-color:var(--red)}
 #contenido h1{text-align:center;margin-bottom:12px}
 .subtitulo{margin:0 0 14px;text-align:center;font:600 1rem/1.3 var(--body);color:var(--mintdeep);letter-spacing:.02em}
-#contenido .fecha{display:table;margin-left:auto;margin-right:auto;text-align:center}
+#contenido .fecha{display:block;width:fit-content;max-width:100%;margin-left:auto;margin-right:auto;text-align:center;font-size:.72rem;padding:6px 14px}
 .compartir-todo{margin-left:auto!important;margin-right:auto!important}
 @media (min-width:980px){
   main{max-width:1180px}
@@ -323,10 +323,14 @@ li.es-importante{box-shadow:inset 4px 0 0 var(--red),var(--shadow)}
     if(!m||!h||MESES[m[2]]===undefined) return;
     var hh=+h[1]%12+(h[3]==="p"?12:0);
     var ms=Date.UTC(+m[3],MESES[m[2]],+m[1],hh+5,+h[2]); // Bogotá = UTC-5
-    var min=Math.round((Date.now()-ms)/60000); if(min<0||isNaN(min)) return;
+    var min=Math.round((Date.now()-ms)/60000); if(isNaN(min)) return; if(min<0) min=0;
     var txt=min<1?"hace un momento":min<60?"hace "+min+" min":min<1440?"hace "+Math.round(min/60)+" h":"hace "+Math.round(min/1440)+" día"+(Math.round(min/1440)>1?"s":"");
+    var dias={lunes:"Lun",martes:"Mar","miércoles":"Mié",miercoles:"Mié",jueves:"Jue",viernes:"Vie","sábado":"Sáb",sabado:"Sáb",domingo:"Dom"};
+    var mesAb=["ene","feb","mar","abr","may","jun","jul","ago","sep","oct","nov","dic"];
+    var dw=(t.match(/lunes|martes|mi[ée]rcoles|jueves|viernes|s[áa]bado|domingo/)||[""])[0];
+    var corta=(dias[dw]?dias[dw]+" ":"")+(+m[1])+" "+mesAb[MESES[m[2]]]+" "+m[3]+" · "+h[1]+":"+h[2]+" "+h[3]+". m.";
     f.innerHTML='<span class="rel"></span><span class="abs"></span>';
-    f.firstChild.textContent="Actualizado "+txt; f.lastChild.textContent=f.dataset.original;
+    f.firstChild.textContent="Actualizado "+txt; f.lastChild.textContent=corta; f.title=f.dataset.original;
   }
 
   var URL_PAG="https://economiahoy.margeninsights.com/";
