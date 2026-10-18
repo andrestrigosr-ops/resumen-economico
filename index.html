@@ -9,7 +9,18 @@
 <link rel="icon" type="image/png" sizes="32x32" href="favicon-32.png">
 <link rel="apple-touch-icon" href="apple-touch-icon.png">
 <link rel="manifest" href="manifest.webmanifest">
-<title>Resumen económico · margen</title>
+<meta name="description" content="Decisiones y noticias económicas de Colombia, con fuentes. Por Margen Insights.">
+<meta property="og:type" content="website">
+<meta property="og:site_name" content="Margen Insights">
+<meta property="og:title" content="Resumen económico diario · Margen Insights">
+<meta property="og:description" content="Decisiones y noticias económicas de Colombia, con fuentes.">
+<meta property="og:url" content="https://andrestrigosr-ops.github.io/resumen-economico/">
+<meta property="og:image" content="https://andrestrigosr-ops.github.io/resumen-economico/og.png">
+<meta property="og:image:width" content="1200">
+<meta property="og:image:height" content="630">
+<meta property="og:locale" content="es_CO">
+<meta name="twitter:card" content="summary_large_image">
+<title>Resumen económico diario · Margen Insights</title>
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Montserrat:wght@600;700;800&family=Nunito+Sans:opsz,wght@6..12,400;6..12,600;6..12,700&display=swap">
 <style>
@@ -68,9 +79,10 @@ li a:hover,li a:focus-visible,.nota a:hover{border-bottom-color:var(--mintdeep);
 .ico{width:15px;height:15px;fill:none;stroke:currentColor;stroke-width:2;stroke-linecap:round;stroke-linejoin:round;flex:none}
 .tag.t-sector{background:var(--mintsoft);color:var(--mintdeep)}
 .tag.t-macro{background:var(--lavsoft);color:var(--lav)}
-.tag.t-antioquia{background:var(--peachsoft);color:var(--peach)}
+.tag.t-regional{background:var(--peachsoft);color:var(--peach)}
 .tag.t-opinion{background:var(--sunsoft);color:var(--sun)}
 .tag.t-mundo{background:var(--skysoft);color:var(--sky)}
+.tag.t-otros{background:var(--line);color:var(--ink2)}
 .nuevo{display:inline-block;margin:0 0 8px 8px;padding:3px 9px;border-radius:999px;background:var(--mint);color:#131030;font:800 .68rem/1.6 var(--body);letter-spacing:.06em;text-transform:uppercase;vertical-align:top}
 #filtros{display:flex;gap:8px;overflow-x:auto;padding:2px 2px 10px;margin:0 0 14px;scrollbar-width:none}
 #filtros[hidden]{display:none}
@@ -89,6 +101,12 @@ li.plegable p{margin-top:10px}
 li.plegable .titular:focus-visible{outline:2px solid var(--mintdeep);outline-offset:4px;border-radius:6px}
 .fecha .rel{display:block;color:var(--ink);font-weight:800}
 .fecha .abs{display:block;font-weight:600;font-size:.8rem;opacity:.8}
+.compartir{display:inline-flex;align-items:center;gap:6px;margin-top:12px;padding:6px 12px;border-radius:999px;background:var(--mintsoft);color:var(--mintdeep);font:700 .8rem/1 var(--body);text-decoration:none}
+.compartir:hover,.compartir:focus-visible{background:var(--mint);color:#131030;outline:none}
+li.plegable .compartir{display:none}
+li.plegable.abierta .compartir{display:inline-flex}
+.compartir-todo{display:flex;width:max-content;align-items:center;gap:7px;margin:0 0 16px;padding:9px 14px;border-radius:999px;background:var(--mint);color:#131030;font:800 .85rem/1 var(--body);text-decoration:none;vertical-align:top}
+.compartir-todo:focus-visible{outline:2px solid var(--ink);outline-offset:2px}
 </style>
 </head>
 <body>
@@ -105,7 +123,7 @@ li.plegable .titular:focus-visible{outline:2px solid var(--mintdeep);outline-off
   <p class="nota">Columnas de opinión de la edición del domingo: no encontré columnas económicas de hoy verificables que pasen el filtro de valor, así que no las incluyo.</p>
 <!-- FIN CONTENIDO -->
 </div>
-  <p class="ia">Este resumen se elabora con inteligencia artificial a partir de las fuentes enlazadas. Antes de citar un dato, verifícalo en su fuente.</p>
+  <p class="ia">Este resumen se elabora con ayuda de inteligencia artificial a partir de las fuentes enlazadas.</p>
   <p class="pie">Resumen económico · margen insights · @andres_trigosr<br><a class="web-pie" href="https://www.margeninsights.com" target="_blank" rel="noopener">www.margeninsights.com</a></p>
 </main>
 <script>
@@ -123,26 +141,23 @@ li.plegable .titular:focus-visible{outline:2px solid var(--mintdeep);outline-off
     mundo:'<circle cx="12" cy="12" r="9"/><path d="M3 12h18M12 3c3 3 3 15 0 18M12 3c-3 3-3 15 0 18"/>',
     general:'<path d="M4 20V10M10 20V4M16 20v-8M22 20H2"/>'
   };
-  // [grupo de color/filtro, icono, regex]
-  var REGLAS=[
-    ["antioquia","antioquia",/antioquia|medell|rionegro|aburr/i],
-    ["opinion","opinion",/columna|opini|editorial/i],
-    ["mundo","mundo",/internacional|mundo|ee\.? ?uu|estados unidos|fmi|global/i],
-    ["macro","macro",/hacienda|presupuesto|deuda|fiscal|macro|banco de la rep|emisor|tasas|inflaci|impuesto|tribut|dane|pib|gasto p/i],
-    ["sector","energia",/energ|gas |petr|miner|ecopetrol|creg|tarifa/i],
-    ["sector","salud",/salud|eps|ips|soat|medicam/i],
-    ["sector","transporte",/transporte|peaje|v[ií]a|aeropuert|ani\b|infraestruct|movilidad/i],
-    ["sector","laboral",/laboral|empleo|desempleo|salario|pensi/i],
-    ["sector","finanzas",/financ|banc|bolsa|d[oó]lar|inversi|cr[eé]dito/i]
-  ];
-  var NOMBRE={todo:"Todo",macro:"Hacienda y macro",sector:"Sectorial",antioquia:"Antioquia",opinion:"Columnas",mundo:"Internacional"};
+  var FIJAS={"economia":"macro","sectorial":"sector","regional":"regional","columnas":"opinion","columna":"opinion","internacional":"mundo","otros":"otros"};
+  var ICONO_GRUPO={macro:"macro",regional:"antioquia",opinion:"opinion",mundo:"mundo",otros:"general"};
+  var SUBSECTOR=[["energia",/energ|gas natural|petr[oó]le|miner|ecopetrol|creg|el[eé]ctric/i],["salud",/salud|\beps\b|\bips\b|soat|medicam|hospital/i],["transporte",/transporte|peaje|aeropuert|\bani\b|v[ií]a |infraestruct|movilidad|carga/i],["laboral",/laboral|empleo|desempleo|salario|pensi[oó]n|trabajador/i],["finanzas",/financ|banco|bolsa|d[oó]lar|cr[eé]dito|utilidad/i]];
+  // etiquetas antiguas (texto libre)
+  var VIEJAS=[["regional",/antioquia|medell|rionegro|aburr|regional/i],["opinion",/columna|opini|editorial/i],["mundo",/internacional|mundo|ee\.? ?uu|estados unidos|fmi|global/i],["macro",/econom|hacienda|presupuesto|deuda|fiscal|macro|banco de la rep|emisor|tasas|inflaci|impuesto|tribut|dane|pib|gasto p/i]];
+  var NOMBRE={todo:"Todo",macro:"Economía",sector:"Sectorial",regional:"Regional",opinion:"Columnas",mundo:"Internacional",otros:"Otros"};
+  function norm(t){return t.toLowerCase().normalize("NFD").replace(/[\u0300-\u036f]/g,"").trim();}
+  function clasificar(tagTxt,cuerpo){
+    var g=FIJAS[norm(tagTxt)];
+    if(!g){g="sector";for(var i=0;i<VIEJAS.length;i++) if(VIEJAS[i][1].test(tagTxt)){g=VIEJAS[i][0];break;}}
+    var ic=ICONO_GRUPO[g];
+    if(g==="sector"){ic="general";for(var j=0;j<SUBSECTOR.length;j++) if(SUBSECTOR[j][1].test(tagTxt+" "+cuerpo)){ic=SUBSECTOR[j][0];break;}}
+    return [g,ic];
+  }
   var filtroActual="todo";
 
   function svg(path){return '<svg class="ico" viewBox="0 0 24 24" aria-hidden="true">'+path+'</svg>';}
-  function clasificar(t){
-    for(var i=0;i<REGLAS.length;i++) if(REGLAS[i][2].test(t)) return REGLAS[i];
-    return ["sector","general"];
-  }
   function huella(li){var p=li.querySelector("p");return (p?p.textContent:li.textContent).replace(/\s+/g," ").trim().slice(0,90);}
   function leerVistos(){try{return JSON.parse(localStorage.getItem("resumen_vistos")||"null");}catch(e){return null;}}
   function guardarVistos(a){try{localStorage.setItem("resumen_vistos",JSON.stringify(a.slice(-80)));}catch(e){}}
@@ -154,7 +169,8 @@ li.plegable .titular:focus-visible{outline:2px solid var(--mintdeep);outline-off
     items.forEach(function(li){
       var tag=li.querySelector(".tag"); if(!tag) return;
       var texto=tag.textContent.replace(/^\s+|\s+$/g,"");
-      var r=clasificar(texto);
+      var cuerpo=(li.querySelector(".titular")||{}).textContent||""; var pp=li.querySelector("p"); if(pp) cuerpo+=" "+pp.textContent;
+      var r=clasificar(texto,cuerpo);
       tag.className="tag t-"+r[0];
       tag.innerHTML=svg(ICON[r[1]])+'<span></span>'; tag.lastChild.textContent=texto;
       li.dataset.grupo=r[0];
@@ -173,16 +189,17 @@ li.plegable .titular:focus-visible{outline:2px solid var(--mintdeep);outline-off
       }
     });
     guardarVistos(vistos);
+    botonesCompartir();
     pintarFiltros(cuenta);
     aplicarFiltro();
     tiempoRelativo();
   }
   function pintarFiltros(cuenta){
     var caja=document.getElementById("filtros"); if(!caja) return;
-    var fe=document.querySelector("#contenido .fecha"); if(fe && fe.nextElementSibling!==caja) fe.after(caja);
+    var fe=document.querySelector("#contenido .compartir-todo")||document.querySelector("#contenido .fecha"); if(fe && fe.nextElementSibling!==caja) fe.after(caja);
     caja.innerHTML="";
     if(cuenta.todo<2){caja.hidden=true;return;} caja.hidden=false;
-    ["todo","macro","sector","antioquia","opinion","mundo"].forEach(function(k){
+    ["todo","macro","sector","regional","opinion","mundo","otros"].forEach(function(k){
       if(!cuenta[k]) return;
       var b=document.createElement("button"); b.type="button"; b.className="chip c-"+k+(k===filtroActual?" activo":"");
       b.innerHTML='<span></span><b>'+cuenta[k]+'</b>'; b.firstChild.textContent=NOMBRE[k];
@@ -207,6 +224,26 @@ li.plegable .titular:focus-visible{outline:2px solid var(--mintdeep);outline-off
     var txt=min<1?"hace un momento":min<60?"hace "+min+" min":min<1440?"hace "+Math.round(min/60)+" h":"hace "+Math.round(min/1440)+" día"+(Math.round(min/1440)>1?"s":"");
     f.innerHTML='<span class="rel"></span><span class="abs"></span>';
     f.firstChild.textContent="Actualizado "+txt; f.lastChild.textContent=f.dataset.original;
+  }
+
+  var URL_PAG="https://andrestrigosr-ops.github.io/resumen-economico/";
+  var WA='<svg class="ico" viewBox="0 0 24 24" aria-hidden="true"><path d="M20 12a8 8 0 0 1-11.8 7L4 20l1.1-4A8 8 0 1 1 20 12z"/><path d="M9 9.5c0 3 2.5 5.5 5.5 5.5l1-1.5-2-1-1 .8a4 4 0 0 1-2-2l.8-1-1-2z"/></svg>';
+  function linkWA(txt){return "https://wa.me/?text="+encodeURIComponent(txt);}
+  function botonesCompartir(){
+    document.querySelectorAll("#contenido li").forEach(function(li){
+      if(li.querySelector(".compartir")) return;
+      var t=li.querySelector(".titular"), p=li.querySelector("p");
+      var base=t?t.textContent.trim():(p?p.textContent.trim().slice(0,160)+"…":"");
+      var a=document.createElement("a"); a.className="compartir"; a.target="_blank"; a.rel="noopener";
+      a.href=linkWA(base+"\n\nResumen económico diario · Margen Insights\n"+URL_PAG);
+      a.innerHTML=WA+"<span>Compartir</span>"; li.appendChild(a);
+    });
+    var f=document.querySelector("#contenido .fecha");
+    if(f && !document.querySelector(".compartir-todo")){
+      var g=document.createElement("a"); g.className="compartir-todo"; g.target="_blank"; g.rel="noopener";
+      g.href=linkWA("Resumen económico diario · Margen Insights\nDecisiones y noticias económicas de Colombia, con fuentes:\n"+URL_PAG);
+      g.innerHTML=WA+"<span>Compartir resumen</span>"; f.after(g);
+    }
   }
   window.pintarEtiquetas=preparar;
   preparar();
