@@ -114,6 +114,16 @@ li.es-importante{box-shadow:inset 4px 0 0 var(--red),var(--shadow)}
 #contenido h1{text-align:center}
 #contenido .fecha{display:table;margin-left:auto;margin-right:auto;text-align:center}
 .compartir-todo{margin-left:auto!important;margin-right:auto!important}
+@media (min-width:980px){
+  main{max-width:1180px}
+  #contenido ol{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));align-items:start;gap:16px}
+  #contenido .nota,.ia{max-width:760px;margin-left:auto;margin-right:auto}
+  #filtros{justify-content:center}
+}
+@media (min-width:1400px){
+  main{max-width:1440px}
+  #contenido ol{grid-template-columns:repeat(3,minmax(0,1fr))}
+}
 </style>
 </head>
 <body>
