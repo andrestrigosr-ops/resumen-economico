@@ -27,10 +27,13 @@ li p{margin:0}
 li a{color:var(--accent);font-weight:600;text-decoration:underline;text-underline-offset:2px;word-break:break-word}
 li a:focus-visible{outline:2px solid var(--accent);outline-offset:2px}
 .nota{color:var(--muted);font-size:.85rem;margin-top:20px;border-top:1px solid var(--line);padding-top:12px}
+#aviso{margin:0 0 18px;padding:10px 12px;border:1px solid var(--line);border-radius:8px;background:var(--tag);color:var(--fg);font-size:.9rem}
 </style>
 </head>
 <body>
 <main>
+  <p id="aviso" hidden></p>
+<div id="contenido">
 <!-- INICIO CONTENIDO -->
   <h1>Resumen económico</h1>
   <p class="fecha">Sábado 17 de octubre de 2026 · actualizado a las 11:30 p. m. (hora de Bogotá)</p>
@@ -52,6 +55,45 @@ li a:focus-visible{outline:2px solid var(--accent);outline-offset:2px}
   </ol>
   <p class="nota">El sábado hubo pocas decisiones formales nuevas. Salvo la nota de La República, los ítems se publicaron el viernes 16 en la tarde, unas horas antes de la ventana de 24 horas. Los incluyo porque no habían salido en ningún resumen anterior. En la actualización de las 11:30 p. m. las búsquedas no devolvieron notas nuevas de las últimas 24 horas, y las fuentes no se pudieron abrir para verificar; los ítems son los de la actualización de las 10:57 p. m., sin nueva verificación.</p>
 <!-- FIN CONTENIDO -->
+</div>
 </main>
+<script>
+(function(){
+  var q = new URLSearchParams(location.search);
+  if (!q.has("esperar")) return;
+  var REPO = "https://api.github.com/repos/andrestrigosr-ops/resumen-economico";
+  var aviso = document.getElementById("aviso");
+  var inicio = Date.now();
+  var LIMITE = 12 * 60 * 1000, CADA = 20000;
+  function decir(t){ aviso.textContent = t; aviso.hidden = false; }
+  function b64utf8(b){ var bin = atob(b.replace(/\n/g,"")); var u = new Uint8Array(bin.length); for (var i=0;i<bin.length;i++) u[i]=bin.charCodeAt(i); return new TextDecoder("utf-8").decode(u); }
+  function cargar(sha){
+    return fetch(REPO + "/contents/index.html?ref=" + sha, {cache:"no-store"}).then(function(r){ return r.json(); }).then(function(j){
+      var html = b64utf8(j.content);
+      var a = html.indexOf("<!-- INICIO CONTENIDO -->"), b = html.indexOf("<!-- FIN CONTENIDO -->");
+      if (a < 0 || b < 0) throw new Error("sin marcas");
+      document.getElementById("contenido").innerHTML = html.slice(a, b + 22);
+      decir("Listo. Este es el resumen recién actualizado.");
+      history.replaceState(null, "", location.pathname);
+    });
+  }
+  function revisar(){
+    if (Date.now() - inicio > LIMITE) { decir("La actualización está tardando más de lo normal. Recarga la página en unos minutos."); return; }
+    fetch(REPO + "/commits/main", {cache:"no-store"}).then(function(r){
+      if (r.status === 403 || r.status === 429) throw new Error("limite");
+      return r.json();
+    }).then(function(c){
+      var fecha = new Date(c.commit.committer.date).getTime();
+      if (fecha > inicio - 60000 && /^Resumen/.test(c.commit.message)) return cargar(c.sha);
+      setTimeout(revisar, CADA);
+    }).catch(function(e){
+      if (e.message === "limite") decir("GitHub limitó las consultas por un rato. Recarga la página en unos minutos.");
+      else setTimeout(revisar, CADA);
+    });
+  }
+  decir("Actualizando el resumen. Suele tardar entre 1 y 5 minutos; esta página se refresca sola.");
+  setTimeout(revisar, 15000);
+})();
+</script>
 </body>
 </html>
