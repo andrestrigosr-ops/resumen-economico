@@ -121,10 +121,13 @@ li.es-importante{box-shadow:inset 4px 0 0 var(--red),var(--shadow)}
   #contenido ol{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));align-items:start;gap:16px}
   #contenido .nota,.ia{max-width:760px;margin-left:auto;margin-right:auto}
   #filtros{justify-content:center}
+  #contenido .agenda{max-width:none;display:grid;grid-template-columns:repeat(2,minmax(0,1fr));align-items:stretch;gap:16px}
+  #contenido .agenda li{padding:16px 18px}
 }
 @media (min-width:1400px){
   main{max-width:1440px}
   #contenido ol{grid-template-columns:repeat(3,minmax(0,1fr))}
+  #contenido .agenda{grid-template-columns:repeat(3,minmax(0,1fr))}
 }
 .redes{display:flex;justify-content:center;flex-wrap:wrap;gap:10px;margin:14px 0 0}
 .ig{display:inline-flex;align-items:center;gap:8px;padding:9px 15px;border-radius:999px;background:var(--card);box-shadow:var(--shadow);color:var(--ink);font:700 .88rem/1 var(--body);text-decoration:none}
