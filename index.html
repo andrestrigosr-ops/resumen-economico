@@ -124,6 +124,11 @@ li.es-importante{box-shadow:inset 4px 0 0 var(--red),var(--shadow)}
   main{max-width:1440px}
   #contenido ol{grid-template-columns:repeat(3,minmax(0,1fr))}
 }
+.redes{display:flex;justify-content:center;flex-wrap:wrap;gap:10px;margin:14px 0 0}
+.ig{display:inline-flex;align-items:center;gap:8px;padding:9px 15px;border-radius:999px;background:var(--card);box-shadow:var(--shadow);color:var(--ink);font:700 .88rem/1 var(--body);text-decoration:none}
+.ig .ico{width:17px;height:17px;color:#d62976}
+.ig:hover,.ig:focus-visible{background:var(--mintsoft);outline:none}
+.redes+.pie{margin-top:12px}
 </style>
 </head>
 <body>
@@ -141,7 +146,9 @@ li.es-importante{box-shadow:inset 4px 0 0 var(--red),var(--shadow)}
 <!-- FIN CONTENIDO -->
 </div>
   <p class="ia">Este resumen se elabora con ayuda de inteligencia artificial a partir de las fuentes enlazadas.</p>
-  <p class="pie">Resumen económico · margen insights · @andres_trigosr<br><a class="web-pie" href="https://www.margeninsights.com" target="_blank" rel="noopener">www.margeninsights.com</a></p>
+  <p class="pie">Resumen económico · margen insights · @andres_trigosr</p>
+  <div class="redes"><a class="ig" href="https://www.instagram.com/margen.insights/" target="_blank" rel="noopener"><svg class="ico" viewBox="0 0 24 24" aria-hidden="true"><rect x="3" y="3" width="18" height="18" rx="5"/><circle cx="12" cy="12" r="4"/><path d="M17.5 6.5h.01"/></svg><span>@margen.insights</span></a><a class="ig" href="https://www.instagram.com/andres_trigosr/" target="_blank" rel="noopener"><svg class="ico" viewBox="0 0 24 24" aria-hidden="true"><rect x="3" y="3" width="18" height="18" rx="5"/><circle cx="12" cy="12" r="4"/><path d="M17.5 6.5h.01"/></svg><span>@andres_trigosr</span></a></div>
+  <p class="pie"><a class="web-pie" href="https://www.margeninsights.com" target="_blank" rel="noopener">www.margeninsights.com</a></p>
 </main>
 <script>
 (function(){
