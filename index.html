@@ -2,36 +2,72 @@
 <html lang="es">
 <head>
 <meta charset="utf-8">
-<meta name="viewport" content="width=device-width,initial-scale=1">
+<meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
 <meta name="robots" content="noindex">
-<title>Resumen económico diario</title>
-
-<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Newsreader:opsz,wght@6..72,600&family=Figtree:wght@400;600&display=swap">
+<meta name="theme-color" content="#f7f5ff" media="(prefers-color-scheme: light)">
+<meta name="theme-color" content="#131030" media="(prefers-color-scheme: dark)">
+<title>Resumen económico · margen</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Montserrat:wght@600;700;800&family=Nunito+Sans:opsz,wght@6..12,400;6..12,600;6..12,700&display=swap">
 <style>
-/* Una columna estrecha para leer en el celular: fecha, lista de ítems con etiqueta y enlace */
+/* Línea MARGEN (índigo #131030, ciruela #2b2845, menta #64ffa0) en versión clara y viva: fondo lila suave con círculos, tarjetas blancas, etiquetas de color por tema */
 :root{
-  --bg:#f6f7f5; --fg:#1d2420; --muted:#5f6b64; --line:#dde2de; --accent:#1f6b52; --tag:#e6efe9; --onaccent:#ffffff; --warn:#8a4b12;
-  --display:"Newsreader",Georgia,serif; --body:"Figtree",system-ui,sans-serif;
+  --bg:#f7f5ff; --bg2:#eefcf4; --card:#ffffff; --ink:#131030; --ink2:#4a4766; --line:#e6e2f5;
+  --mint:#64ffa0; --mintdeep:#13965a; --mintsoft:#dcfbe8;
+  --lav:#6c5ce7; --lavsoft:#ece9ff; --peach:#e8603c; --peachsoft:#ffe9e1;
+  --sun:#b7791f; --sunsoft:#fff3d6; --sky:#1f7fbf; --skysoft:#e0f1fc;
+  --orb1:rgba(100,255,160,.35); --orb2:rgba(108,92,231,.16);
+  --shadow:0 1px 2px rgba(19,16,48,.05),0 6px 20px rgba(19,16,48,.06);
+  --display:"Montserrat",system-ui,sans-serif; --body:"Nunito Sans",system-ui,sans-serif;
+  color-scheme:light;
 }
-@media (prefers-color-scheme:dark){:root:not([data-theme="light"]){--bg:#141916;--fg:#e4e9e5;--muted:#9aa7a0;--line:#2b332e;--accent:#6fc4a3;--tag:#1f2a24;--onaccent:#0f1512;--warn:#e0a76a;color-scheme:dark}}
-:root[data-theme="dark"]{--bg:#141916;--fg:#e4e9e5;--muted:#9aa7a0;--line:#2b332e;--accent:#6fc4a3;--tag:#1f2a24;--onaccent:#0f1512;--warn:#e0a76a;color-scheme:dark}
-body{margin:0;background:var(--bg);color:var(--fg);font-family:var(--body);font-size:16px;line-height:1.5;
-  padding-left:max(16px,env(safe-area-inset-left,0px));padding-right:max(16px,env(safe-area-inset-right,0px));padding-block:24px 40px}
-main{max-width:640px;margin:0 auto}
-h1{font-family:var(--display);font-weight:600;font-size:1.7rem;line-height:1.15;margin:0;text-wrap:balance}
-.fecha{color:var(--muted);font-size:.9rem;margin:4px 0 20px}
-ol{list-style:none;margin:0;padding:0;display:flex;flex-direction:column}
-li{padding:14px 0;border-top:1px solid var(--line);min-width:0}
-.tag{display:inline-block;font-size:.72rem;font-weight:600;letter-spacing:.06em;text-transform:uppercase;color:var(--accent);background:var(--tag);padding:2px 7px;border-radius:4px;margin-bottom:6px}
-li p{margin:0}
-li a{color:var(--accent);font-weight:600;text-decoration:underline;text-underline-offset:2px;word-break:break-word}
-li a:focus-visible{outline:2px solid var(--accent);outline-offset:2px}
-.nota{color:var(--muted);font-size:.85rem;margin-top:20px;border-top:1px solid var(--line);padding-top:12px}
-#aviso{margin:0 0 18px;padding:10px 12px;border:1px solid var(--line);border-radius:8px;background:var(--tag);color:var(--fg);font-size:.9rem}
+@media (prefers-color-scheme:dark){:root{
+  --bg:#131030; --bg2:#19163a; --card:#211e40; --ink:#f3f1ff; --ink2:#b8b4d6; --line:#34305a;
+  --mintdeep:#64ffa0; --mintsoft:rgba(100,255,160,.14);
+  --lav:#b3a9ff; --lavsoft:rgba(140,124,255,.18); --peach:#ff9f80; --peachsoft:rgba(255,130,100,.16);
+  --sun:#ffd27a; --sunsoft:rgba(255,200,90,.14); --sky:#8ecdf5; --skysoft:rgba(110,190,245,.15);
+  --orb1:rgba(100,255,160,.16); --orb2:rgba(140,124,255,.18);
+  --shadow:0 1px 2px rgba(0,0,0,.25),0 8px 24px rgba(0,0,0,.25);
+  color-scheme:dark;
+}}
+*{box-sizing:border-box}
+html{background:var(--bg)}
+body{margin:0;min-height:100vh;color:var(--ink);font:400 16.5px/1.6 var(--body);
+  background:
+    radial-gradient(420px 420px at 105% -60px,var(--orb1),transparent 70%),
+    radial-gradient(360px 360px at -120px 340px,var(--orb2),transparent 70%),
+    linear-gradient(180deg,var(--bg) 0%,var(--bg2) 100%);
+  background-attachment:fixed;
+  padding:max(20px,env(safe-area-inset-top)) max(16px,env(safe-area-inset-right)) 48px max(16px,env(safe-area-inset-left))}
+main{max-width:660px;margin:0 auto}
+.marca{display:flex;align-items:baseline;gap:8px;margin:4px 0 22px}
+.logo{font:800 1.35rem/1 var(--display);letter-spacing:.01em;color:var(--ink)}
+.logo b{position:relative;color:var(--mintdeep)}
+.logo b::after{content:"";position:absolute;right:-5px;top:-5px;width:8px;height:8px;border-top:2.5px solid var(--mintdeep);border-right:2.5px solid var(--mintdeep)}
+.marca small{font:600 .78rem var(--body);color:var(--mintdeep);letter-spacing:.04em}
+#aviso{margin:0 0 18px;padding:12px 14px;border-radius:14px;background:var(--mintsoft);color:var(--ink);font-weight:600;font-size:.92rem}
+#aviso[hidden]{display:none}
+h1{font:700 clamp(1.7rem,6vw,2.2rem)/1.15 var(--display);margin:0 0 10px;letter-spacing:-.01em;text-wrap:balance}
+h2{font:700 1.15rem/1.3 var(--display);margin:30px 0 4px}
+.fecha{display:inline-block;margin:0 0 22px;padding:7px 13px;border-radius:14px;background:var(--card);box-shadow:var(--shadow);color:var(--ink2);font-size:.88rem;font-weight:600}
+ol{list-style:none;margin:0;padding:0;display:flex;flex-direction:column;gap:14px}
+li{background:var(--card);border-radius:18px;padding:16px 18px;box-shadow:var(--shadow);min-width:0}
+li p{margin:0;color:var(--ink)}
+.tag{display:inline-block;margin:0 0 8px;padding:3px 10px;border-radius:999px;font:700 .72rem/1.6 var(--body);letter-spacing:.05em;text-transform:uppercase;background:var(--mintsoft);color:var(--mintdeep)}
+.tag.t-macro{background:var(--lavsoft);color:var(--lav)}
+.tag.t-antioquia{background:var(--peachsoft);color:var(--peach)}
+.tag.t-opinion{background:var(--sunsoft);color:var(--sun)}
+.tag.t-mundo{background:var(--skysoft);color:var(--sky)}
+li a,.nota a{color:var(--mintdeep);font-weight:700;text-decoration:none;border-bottom:2px solid var(--mintsoft);word-break:break-word}
+li a:hover,li a:focus-visible,.nota a:hover{border-bottom-color:var(--mintdeep);outline:none}
+.nota{margin:22px 0 0;padding:14px 16px;border-radius:14px;border:1px dashed var(--line);color:var(--ink2);font-size:.88rem}
+.pie{margin:34px 0 0;text-align:center;color:var(--ink2);font-size:.8rem}
+@media (prefers-reduced-motion:no-preference){li{animation:sube .35s ease both}@keyframes sube{from{transform:translateY(6px);opacity:.6}to{transform:none;opacity:1}}}
 </style>
 </head>
 <body>
 <main>
+  <div class="marca"><span class="logo">marg<b>e</b>n</span><small>insights</small></div>
   <p id="aviso" hidden></p>
 <div id="contenido">
 <!-- INICIO CONTENIDO -->
@@ -41,7 +77,15 @@ li a:focus-visible{outline:2px solid var(--accent);outline-offset:2px}
   <p class="nota">Pendiente de confirmar, fuera de la ventana de 24 horas: el Presupuesto General de la Nación 2027, por $634,9 billones, pasó a plenarias según una nota de Infobae del 14/10 (fuente no abierta). Según la búsqueda, las plenarias deben aprobarlo antes del 20 de octubre o el Gobierno puede expedirlo por decreto; conviene verificarlo en la Cámara, el Senado y Minhacienda. <a href="https://www.infobae.com/colombia/2026/10/14/presupuesto-de-2027-paso-a-segundo-debate-con-reduccion-a-la-deuda-y-recortes-en-la-aerocivil-y-superservicios-asi-funcionara-el-ajuste/">Infobae, 14/10</a></p>
 <!-- FIN CONTENIDO -->
 </div>
+  <p class="pie">Resumen económico · margen insights · @andres_trigosr</p>
 </main>
+<script>
+(function(){
+  var reglas=[["t-antioquia",/antioquia|medell|rionegro|valle de aburr/i],["t-opinion",/columna|opini|editorial/i],["t-mundo",/internacional|mundo|ee\.? ?uu|fmi|global/i],["t-macro",/hacienda|presupuesto|deuda|fiscal|macro|banco de la rep|emisor|tasas|inflaci|impuesto|tribut|dane|pib/i]];
+  window.pintarEtiquetas=function(){document.querySelectorAll(".tag").forEach(function(t){t.className="tag";for(var i=0;i<reglas.length;i++){if(reglas[i][1].test(t.textContent)){t.classList.add(reglas[i][0]);break;}}});};
+  pintarEtiquetas();
+})();
+</script>
 <script>
 (function(){
   var q = new URLSearchParams(location.search);
@@ -55,9 +99,10 @@ li a:focus-visible{outline:2px solid var(--accent);outline-offset:2px}
   function cargar(sha){
     return fetch(REPO + "/contents/index.html?ref=" + sha, {cache:"no-store"}).then(function(r){ return r.json(); }).then(function(j){
       var html = b64utf8(j.content);
-      var a = html.indexOf("<!-- INICIO CONTENIDO -->"), b = html.indexOf("<!-- FIN CONTENIDO -->");
+      var a = html.indexOf("<!-- INICIO " + "CONTENIDO -->"), b = html.indexOf("<!-- FIN " + "CONTENIDO -->");
       if (a < 0 || b < 0) throw new Error("sin marcas");
       document.getElementById("contenido").innerHTML = html.slice(a, b + 22);
+      if (window.pintarEtiquetas) pintarEtiquetas();
       decir("Listo. Este es el resumen recién actualizado.");
       history.replaceState(null, "", location.pathname);
     });
