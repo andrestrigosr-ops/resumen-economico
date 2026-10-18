@@ -29,7 +29,7 @@
   --bg:#f7f5ff; --bg2:#eefcf4; --card:#ffffff; --ink:#131030; --ink2:#4a4766; --line:#e6e2f5;
   --mint:#64ffa0; --mintdeep:#13965a; --mintsoft:#dcfbe8;
   --lav:#6c5ce7; --lavsoft:#ece9ff; --peach:#e8603c; --peachsoft:#ffe9e1;
-  --sun:#b7791f; --sunsoft:#fff3d6; --sky:#1f7fbf; --skysoft:#e0f1fc;
+  --red:#d62839; --onred:#ffffff; --sun:#b7791f; --sunsoft:#fff3d6; --sky:#1f7fbf; --skysoft:#e0f1fc;
   --orb1:rgba(100,255,160,.35); --orb2:rgba(108,92,231,.16);
   --shadow:0 1px 2px rgba(19,16,48,.05),0 6px 20px rgba(19,16,48,.06);
   --display:"Montserrat",system-ui,sans-serif; --body:"Nunito Sans",system-ui,sans-serif;
@@ -39,7 +39,7 @@
   --bg:#131030; --bg2:#19163a; --card:#211e40; --ink:#f3f1ff; --ink2:#b8b4d6; --line:#34305a;
   --mintdeep:#64ffa0; --mintsoft:rgba(100,255,160,.14);
   --lav:#b3a9ff; --lavsoft:rgba(140,124,255,.18); --peach:#ff9f80; --peachsoft:rgba(255,130,100,.16);
-  --sun:#ffd27a; --sunsoft:rgba(255,200,90,.14); --sky:#8ecdf5; --skysoft:rgba(110,190,245,.15);
+  --red:#ff6b7a; --onred:#2a0a12; --sun:#ffd27a; --sunsoft:rgba(255,200,90,.14); --sky:#8ecdf5; --skysoft:rgba(110,190,245,.15);
   --orb1:rgba(100,255,160,.16); --orb2:rgba(140,124,255,.18);
   --shadow:0 1px 2px rgba(0,0,0,.25),0 8px 24px rgba(0,0,0,.25);
   color-scheme:dark;
@@ -107,6 +107,10 @@ li.plegable .compartir{display:none}
 li.plegable.abierta .compartir{display:inline-flex}
 .compartir-todo{display:flex;width:max-content;align-items:center;gap:7px;margin:0 0 16px;padding:9px 14px;border-radius:999px;background:var(--mint);color:#131030;font:800 .85rem/1 var(--body);text-decoration:none;vertical-align:top}
 .compartir-todo:focus-visible{outline:2px solid var(--ink);outline-offset:2px}
+.tag.importante{background:var(--red);color:var(--onred);margin-left:6px}
+li.es-importante{box-shadow:inset 4px 0 0 var(--red),var(--shadow)}
+.chip.c-importante{border-color:var(--red);color:var(--red)}
+.chip.c-importante.activo{background:var(--red);color:var(--onred);border-color:var(--red)}
 </style>
 </head>
 <body>
@@ -146,7 +150,7 @@ li.plegable.abierta .compartir{display:inline-flex}
   var SUBSECTOR=[["energia",/energ|gas natural|petr[oó]le|miner|ecopetrol|creg|el[eé]ctric/i],["salud",/salud|\beps\b|\bips\b|soat|medicam|hospital/i],["transporte",/transporte|peaje|aeropuert|\bani\b|v[ií]a |infraestruct|movilidad|carga/i],["laboral",/laboral|empleo|desempleo|salario|pensi[oó]n|trabajador/i],["finanzas",/financ|banco|bolsa|d[oó]lar|cr[eé]dito|utilidad/i]];
   // etiquetas antiguas (texto libre)
   var VIEJAS=[["regional",/antioquia|medell|rionegro|aburr|regional/i],["opinion",/columna|opini|editorial/i],["mundo",/internacional|mundo|ee\.? ?uu|estados unidos|fmi|global/i],["macro",/econom|hacienda|presupuesto|deuda|fiscal|macro|banco de la rep|emisor|tasas|inflaci|impuesto|tribut|dane|pib|gasto p/i]];
-  var NOMBRE={todo:"Todo",macro:"Economía",sector:"Sectorial",regional:"Regional",opinion:"Columnas",mundo:"Internacional",otros:"Otros"};
+  var NOMBRE={todo:"Todo",importante:"¡Importante!",macro:"Economía",sector:"Sectorial",regional:"Regional",opinion:"Columnas",mundo:"Internacional",otros:"Otros"};
   function norm(t){return t.toLowerCase().normalize("NFD").replace(/[\u0300-\u036f]/g,"").trim();}
   function clasificar(tagTxt,cuerpo){
     var g=FIJAS[norm(tagTxt)];
@@ -163,11 +167,15 @@ li.plegable.abierta .compartir{display:inline-flex}
   function guardarVistos(a){try{localStorage.setItem("resumen_vistos",JSON.stringify(a.slice(-80)));}catch(e){}}
 
   function preparar(){
+    document.querySelectorAll("#contenido ol").forEach(function(ol){
+      var imps=[].slice.call(ol.querySelectorAll(":scope > li")).filter(function(li){return li.querySelector(".tag.importante");});
+      imps.reverse().forEach(function(li){ol.insertBefore(li,ol.firstChild);});
+    });
     var items=[].slice.call(document.querySelectorAll("#contenido li"));
     var vistos=leerVistos(), primera=vistos===null; vistos=vistos||[];
     var cuenta={todo:0};
     items.forEach(function(li){
-      var tag=li.querySelector(".tag"); if(!tag) return;
+      var tag=li.querySelector(".tag:not(.importante)"); var imp=li.querySelector(".tag.importante"); if(imp){li.classList.add("es-importante"); if(!imp.querySelector(".ico")) imp.innerHTML=svg('<path d="M12 3l10 18H2z"/><path d="M12 10v5M12 18h.01"/>')+"<span>¡Importante!</span>"; cuenta.importante=(cuenta.importante||0)+1;} if(!tag) return;
       var texto=tag.textContent.replace(/^\s+|\s+$/g,"");
       var cuerpo=(li.querySelector(".titular")||{}).textContent||""; var pp=li.querySelector("p"); if(pp) cuerpo+=" "+pp.textContent;
       var r=clasificar(texto,cuerpo);
@@ -176,7 +184,7 @@ li.plegable.abierta .compartir{display:inline-flex}
       li.dataset.grupo=r[0];
       cuenta.todo++; cuenta[r[0]]=(cuenta[r[0]]||0)+1;
       var h=huella(li);
-      if(!primera && vistos.indexOf(h)<0 && !li.querySelector(".nuevo")){var n=document.createElement("span");n.className="nuevo";n.textContent="Nuevo";tag.after(n);}
+      if(!primera && vistos.indexOf(h)<0 && !li.querySelector(".nuevo")){var n=document.createElement("span");n.className="nuevo";n.textContent="Nuevo";(imp||tag).after(n);}
       if(vistos.indexOf(h)<0) vistos.push(h);
       // tarjetas plegables si traen titular
       var tit=li.querySelector(".titular"), det=li.querySelector("p");
@@ -199,7 +207,7 @@ li.plegable.abierta .compartir{display:inline-flex}
     var fe=document.querySelector("#contenido .compartir-todo")||document.querySelector("#contenido .fecha"); if(fe && fe.nextElementSibling!==caja) fe.after(caja);
     caja.innerHTML="";
     if(cuenta.todo<2){caja.hidden=true;return;} caja.hidden=false;
-    ["todo","macro","sector","regional","opinion","mundo","otros"].forEach(function(k){
+    ["todo","importante","macro","sector","regional","opinion","mundo","otros"].forEach(function(k){
       if(!cuenta[k]) return;
       var b=document.createElement("button"); b.type="button"; b.className="chip c-"+k+(k===filtroActual?" activo":"");
       b.innerHTML='<span></span><b>'+cuenta[k]+'</b>'; b.firstChild.textContent=NOMBRE[k];
@@ -209,7 +217,7 @@ li.plegable.abierta .compartir{display:inline-flex}
     });
   }
   function aplicarFiltro(){
-    document.querySelectorAll("#contenido li").forEach(function(li){li.hidden=!(filtroActual==="todo"||li.dataset.grupo===filtroActual);});
+    document.querySelectorAll("#contenido li").forEach(function(li){li.hidden=!(filtroActual==="todo"||li.dataset.grupo===filtroActual||(filtroActual==="importante"&&li.classList.contains("es-importante")));});
   }
   var MESES={enero:0,febrero:1,marzo:2,abril:3,mayo:4,junio:5,julio:6,agosto:7,septiembre:8,setiembre:8,octubre:9,noviembre:10,diciembre:11};
   function tiempoRelativo(){
