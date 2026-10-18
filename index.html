@@ -43,7 +43,10 @@ body{margin:0;min-height:100vh;color:var(--ink);font:400 16.5px/1.6 var(--body);
   background-attachment:fixed;
   padding:max(20px,env(safe-area-inset-top)) max(16px,env(safe-area-inset-right)) 48px max(16px,env(safe-area-inset-left))}
 main{max-width:660px;margin:0 auto}
-.marca{margin:2px 0 22px}
+.marca{margin:2px 0 22px;display:flex;align-items:center;justify-content:space-between;gap:12px;flex-wrap:wrap}
+.web{font:700 .95rem/1 var(--display);color:var(--ink);text-decoration:none;padding:9px 14px;border-radius:999px;background:var(--card);box-shadow:var(--shadow);white-space:nowrap}
+.web:hover,.web:focus-visible{background:var(--mintsoft);outline:none}
+.web-pie{display:inline-block;margin-top:10px;font:800 clamp(1.15rem,4.6vw,1.4rem)/1.2 var(--display);color:var(--mintdeep);text-decoration:none;border-bottom:3px solid var(--mint)}
 .marca img{display:block;width:150px;height:auto}
 #aviso{margin:0 0 18px;padding:12px 14px;border-radius:14px;background:var(--mintsoft);color:var(--ink);font-weight:600;font-size:.92rem}
 #aviso[hidden]{display:none}
@@ -67,7 +70,7 @@ li a:hover,li a:focus-visible,.nota a:hover{border-bottom-color:var(--mintdeep);
 </head>
 <body>
 <main>
-  <div class="marca"><picture><source srcset="logo-oscuro.png" media="(prefers-color-scheme: dark)"><img src="logo-claro.png" alt="margen insights" width="150"></picture></div>
+  <div class="marca"><picture><source srcset="logo-oscuro.png" media="(prefers-color-scheme: dark)"><img src="logo-claro.png" alt="margen insights" width="150"></picture><a class="web" href="https://www.margeninsights.com" target="_blank" rel="noopener">margeninsights.com</a></div>
   <p id="aviso" hidden></p>
 <div id="contenido">
 <!-- INICIO CONTENIDO -->
@@ -78,7 +81,7 @@ li a:hover,li a:focus-visible,.nota a:hover{border-bottom-color:var(--mintdeep);
   <p class="nota">Columnas de opinión de la edición del domingo: no encontré columnas económicas de hoy verificables que pasen el filtro de valor, así que no las incluyo.</p>
 <!-- FIN CONTENIDO -->
 </div>
-  <p class="pie">Resumen económico · margen insights · @andres_trigosr</p>
+  <p class="pie">Resumen económico · margen insights · @andres_trigosr<br><a class="web-pie" href="https://www.margeninsights.com" target="_blank" rel="noopener">www.margeninsights.com</a></p>
 </main>
 <script>
 (function(){
