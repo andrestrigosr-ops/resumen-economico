@@ -1,6 +1,6 @@
 {
-  "name": "Al margen · lo económico del día",
-  "short_name": "Al margen",
+  "name": "Lo económico del día · Margen Insights",
+  "short_name": "Economía hoy",
   "start_url": "./",
   "display": "standalone",
   "background_color": "#131030",
