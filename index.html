@@ -167,10 +167,6 @@ li.es-importante{box-shadow:inset 4px 0 0 var(--red),var(--shadow)}
   function guardarVistos(a){try{localStorage.setItem("resumen_vistos",JSON.stringify(a.slice(-80)));}catch(e){}}
 
   function preparar(){
-    document.querySelectorAll("#contenido ol").forEach(function(ol){
-      var imps=[].slice.call(ol.querySelectorAll(":scope > li")).filter(function(li){return li.querySelector(".tag.importante");});
-      imps.reverse().forEach(function(li){ol.insertBefore(li,ol.firstChild);});
-    });
     var items=[].slice.call(document.querySelectorAll("#contenido li"));
     var vistos=leerVistos(), primera=vistos===null; vistos=vistos||[];
     var cuenta={todo:0};
