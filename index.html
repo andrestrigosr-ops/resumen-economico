@@ -112,7 +112,7 @@ li.plegable.abierta .compartir{display:inline-flex}
 li.es-importante{box-shadow:inset 4px 0 0 var(--red),var(--shadow)}
 .chip.c-importante{border-color:var(--red);color:var(--red)}
 .chip.c-importante.activo{background:var(--red);color:var(--onred);border-color:var(--red)}
-#contenido h1{text-align:center;margin-bottom:2px}
+#contenido h1{text-align:center;margin-bottom:12px}
 .subtitulo{margin:0 0 14px;text-align:center;font:600 1rem/1.3 var(--body);color:var(--mintdeep);letter-spacing:.02em}
 #contenido .fecha{display:table;margin-left:auto;margin-right:auto;text-align:center}
 .compartir-todo{margin-left:auto!important;margin-right:auto!important}
@@ -154,7 +154,7 @@ li.es-importante{box-shadow:inset 4px 0 0 var(--red),var(--shadow)}
   <nav id="filtros" aria-label="Filtrar por tema" hidden></nav>
 <div id="contenido">
 <!-- INICIO CONTENIDO -->
-  <h1>Al margen</h1>
+  <h1>Lo económico del día</h1>
   <p class="fecha">Domingo 18 de octubre de 2026 · actualizado a las 1:25 p. m. (hora de Bogotá)</p>
   <h2 class="seccion-titulo">Noticias</h2>
   <ol>
@@ -214,8 +214,8 @@ li.es-importante{box-shadow:inset 4px 0 0 var(--red),var(--shadow)}
 (function(){
   function titular(){
     var h=document.querySelector("#contenido h1"); if(!h) return;
-    h.textContent="Al margen";
-    if(!document.querySelector("#contenido .subtitulo")){var p=document.createElement("p");p.className="subtitulo";p.textContent="lo económico del día";h.after(p);}
+    h.textContent="Lo económico del día";
+    var sub=document.querySelector("#contenido .subtitulo"); if(sub) sub.remove();
   }
   titular(); window.ponerTitulo=titular;
 })();
