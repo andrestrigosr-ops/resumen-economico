@@ -52,26 +52,48 @@ main{max-width:660px;margin:0 auto}
 #aviso[hidden]{display:none}
 h1{font:700 clamp(1.7rem,6vw,2.2rem)/1.15 var(--display);margin:0 0 10px;letter-spacing:-.01em;text-wrap:balance}
 h2{font:700 1.15rem/1.3 var(--display);margin:30px 0 4px}
-.fecha{display:inline-block;margin:0 0 22px;padding:7px 13px;border-radius:14px;background:var(--card);box-shadow:var(--shadow);color:var(--ink2);font-size:.88rem;font-weight:600}
+.fecha{display:inline-block;margin:0 0 16px;padding:7px 13px;border-radius:14px;background:var(--card);box-shadow:var(--shadow);color:var(--ink2);font-size:.88rem;font-weight:600}
 ol{list-style:none;margin:0;padding:0;display:flex;flex-direction:column;gap:14px}
 li{background:var(--card);border-radius:18px;padding:16px 18px;box-shadow:var(--shadow);min-width:0}
 li p{margin:0;color:var(--ink)}
 .tag{display:inline-block;margin:0 0 8px;padding:3px 10px;border-radius:999px;font:700 .72rem/1.6 var(--body);letter-spacing:.05em;text-transform:uppercase;background:var(--mintsoft);color:var(--mintdeep)}
-.tag.t-macro{background:var(--lavsoft);color:var(--lav)}
-.tag.t-antioquia{background:var(--peachsoft);color:var(--peach)}
-.tag.t-opinion{background:var(--sunsoft);color:var(--sun)}
-.tag.t-mundo{background:var(--skysoft);color:var(--sky)}
 li a,.nota a{color:var(--mintdeep);font-weight:700;text-decoration:none;border-bottom:2px solid var(--mintsoft);word-break:break-word}
 li a:hover,li a:focus-visible,.nota a:hover{border-bottom-color:var(--mintdeep);outline:none}
 .nota{margin:22px 0 0;padding:14px 16px;border-radius:14px;border:1px dashed var(--line);color:var(--ink2);font-size:.88rem}
 .pie{margin:34px 0 0;text-align:center;color:var(--ink2);font-size:.8rem}
 @media (prefers-reduced-motion:no-preference){li{animation:sube .35s ease both}@keyframes sube{from{transform:translateY(6px);opacity:.6}to{transform:none;opacity:1}}}
+.tag{display:inline-flex;align-items:center;gap:6px}
+.ico{width:15px;height:15px;fill:none;stroke:currentColor;stroke-width:2;stroke-linecap:round;stroke-linejoin:round;flex:none}
+.tag.t-sector{background:var(--mintsoft);color:var(--mintdeep)}
+.tag.t-macro{background:var(--lavsoft);color:var(--lav)}
+.tag.t-antioquia{background:var(--peachsoft);color:var(--peach)}
+.tag.t-opinion{background:var(--sunsoft);color:var(--sun)}
+.tag.t-mundo{background:var(--skysoft);color:var(--sky)}
+.nuevo{display:inline-block;margin:0 0 8px 8px;padding:3px 9px;border-radius:999px;background:var(--mint);color:#131030;font:800 .68rem/1.6 var(--body);letter-spacing:.06em;text-transform:uppercase;vertical-align:top}
+#filtros{display:flex;gap:8px;overflow-x:auto;padding:2px 2px 10px;margin:0 0 14px;scrollbar-width:none}
+#filtros[hidden]{display:none}
+#filtros::-webkit-scrollbar{display:none}
+.chip{flex:none;display:inline-flex;align-items:center;gap:7px;padding:8px 13px;border-radius:999px;border:1.5px solid var(--line);background:var(--card);color:var(--ink);font:700 .85rem/1 var(--body);cursor:pointer}
+.chip b{font-size:.75rem;padding:2px 7px;border-radius:999px;background:var(--bg);color:var(--ink2)}
+.chip.activo{border-color:var(--ink);background:var(--ink);color:var(--bg)}
+.chip.activo b{background:var(--card);color:var(--ink)}
+.chip:focus-visible{outline:2px solid var(--mintdeep);outline-offset:2px}
+li[hidden]{display:none}
+.titular{margin:0;font:700 1.02rem/1.35 var(--display);color:var(--ink);text-wrap:pretty}
+li.plegable .titular{cursor:pointer;display:flex;justify-content:space-between;gap:12px}
+li.plegable .titular::after{content:"";flex:none;width:9px;height:9px;margin-top:6px;border-right:2.5px solid var(--ink2);border-bottom:2.5px solid var(--ink2);transform:rotate(45deg);transition:transform .2s}
+li.plegable.abierta .titular::after{transform:rotate(-135deg);margin-top:10px}
+li.plegable p{margin-top:10px}
+li.plegable .titular:focus-visible{outline:2px solid var(--mintdeep);outline-offset:4px;border-radius:6px}
+.fecha .rel{display:block;color:var(--ink);font-weight:800}
+.fecha .abs{display:block;font-weight:600;font-size:.8rem;opacity:.8}
 </style>
 </head>
 <body>
 <main>
   <div class="marca"><picture><source srcset="logo-oscuro.png" media="(prefers-color-scheme: dark)"><img src="logo-claro.png" alt="margen insights" width="150"></picture><a class="web" href="https://www.margeninsights.com" target="_blank" rel="noopener">margeninsights.com</a></div>
   <p id="aviso" hidden></p>
+  <nav id="filtros" aria-label="Filtrar por tema" hidden></nav>
 <div id="contenido">
 <!-- INICIO CONTENIDO -->
   <h1>Resumen económico</h1>
@@ -85,9 +107,107 @@ li a:hover,li a:focus-visible,.nota a:hover{border-bottom-color:var(--mintdeep);
 </main>
 <script>
 (function(){
-  var reglas=[["t-antioquia",/antioquia|medell|rionegro|valle de aburr/i],["t-opinion",/columna|opini|editorial/i],["t-mundo",/internacional|mundo|ee\.? ?uu|fmi|global/i],["t-macro",/hacienda|presupuesto|deuda|fiscal|macro|banco de la rep|emisor|tasas|inflaci|impuesto|tribut|dane|pib/i]];
-  window.pintarEtiquetas=function(){document.querySelectorAll(".tag").forEach(function(t){t.className="tag";for(var i=0;i<reglas.length;i++){if(reglas[i][1].test(t.textContent)){t.classList.add(reglas[i][0]);break;}}});};
-  pintarEtiquetas();
+  var NS="http://www.w3.org/2000/svg";
+  var ICON={
+    macro:'<path d="M3 10h18M5 10v8M9.5 10v8M14.5 10v8M19 10v8M3 20h18M12 3l9 5H3z"/>',
+    energia:'<path d="M13 2L4 14h7l-1 8 9-12h-7z"/>',
+    salud:'<path d="M9 3h6v6h6v6h-6v6H9v-6H3V9h6z"/>',
+    transporte:'<path d="M5 17h14M6 17l1.5-6h9L18 17M8 11l1-4h6l1 4"/><circle cx="8" cy="19" r="1.5"/><circle cx="16" cy="19" r="1.5"/>',
+    laboral:'<rect x="3" y="7" width="18" height="13" rx="2"/><path d="M9 7V5a2 2 0 0 1 2-2h2a2 2 0 0 1 2 2v2M3 13h18"/>',
+    finanzas:'<path d="M4 19V5M4 19h16M8 15l3-4 3 2 5-6"/>',
+    antioquia:'<path d="M3 20l6-10 4 6 3-4 5 8z"/>',
+    opinion:'<path d="M4 20l4-1 11-11-3-3L5 16zM14 6l3 3"/>',
+    mundo:'<circle cx="12" cy="12" r="9"/><path d="M3 12h18M12 3c3 3 3 15 0 18M12 3c-3 3-3 15 0 18"/>',
+    general:'<path d="M4 20V10M10 20V4M16 20v-8M22 20H2"/>'
+  };
+  // [grupo de color/filtro, icono, regex]
+  var REGLAS=[
+    ["antioquia","antioquia",/antioquia|medell|rionegro|aburr/i],
+    ["opinion","opinion",/columna|opini|editorial/i],
+    ["mundo","mundo",/internacional|mundo|ee\.? ?uu|estados unidos|fmi|global/i],
+    ["macro","macro",/hacienda|presupuesto|deuda|fiscal|macro|banco de la rep|emisor|tasas|inflaci|impuesto|tribut|dane|pib|gasto p/i],
+    ["sector","energia",/energ|gas |petr|miner|ecopetrol|creg|tarifa/i],
+    ["sector","salud",/salud|eps|ips|soat|medicam/i],
+    ["sector","transporte",/transporte|peaje|v[ií]a|aeropuert|ani\b|infraestruct|movilidad/i],
+    ["sector","laboral",/laboral|empleo|desempleo|salario|pensi/i],
+    ["sector","finanzas",/financ|banc|bolsa|d[oó]lar|inversi|cr[eé]dito/i]
+  ];
+  var NOMBRE={todo:"Todo",macro:"Hacienda y macro",sector:"Sectorial",antioquia:"Antioquia",opinion:"Columnas",mundo:"Internacional"};
+  var filtroActual="todo";
+
+  function svg(path){return '<svg class="ico" viewBox="0 0 24 24" aria-hidden="true">'+path+'</svg>';}
+  function clasificar(t){
+    for(var i=0;i<REGLAS.length;i++) if(REGLAS[i][2].test(t)) return REGLAS[i];
+    return ["sector","general"];
+  }
+  function huella(li){var p=li.querySelector("p");return (p?p.textContent:li.textContent).replace(/\s+/g," ").trim().slice(0,90);}
+  function leerVistos(){try{return JSON.parse(localStorage.getItem("resumen_vistos")||"null");}catch(e){return null;}}
+  function guardarVistos(a){try{localStorage.setItem("resumen_vistos",JSON.stringify(a.slice(-80)));}catch(e){}}
+
+  function preparar(){
+    var items=[].slice.call(document.querySelectorAll("#contenido li"));
+    var vistos=leerVistos(), primera=vistos===null; vistos=vistos||[];
+    var cuenta={todo:0};
+    items.forEach(function(li){
+      var tag=li.querySelector(".tag"); if(!tag) return;
+      var texto=tag.textContent.replace(/^\s+|\s+$/g,"");
+      var r=clasificar(texto);
+      tag.className="tag t-"+r[0];
+      tag.innerHTML=svg(ICON[r[1]])+'<span></span>'; tag.lastChild.textContent=texto;
+      li.dataset.grupo=r[0];
+      cuenta.todo++; cuenta[r[0]]=(cuenta[r[0]]||0)+1;
+      var h=huella(li);
+      if(!primera && vistos.indexOf(h)<0 && !li.querySelector(".nuevo")){var n=document.createElement("span");n.className="nuevo";n.textContent="Nuevo";tag.after(n);}
+      if(vistos.indexOf(h)<0) vistos.push(h);
+      // tarjetas plegables si traen titular
+      var tit=li.querySelector(".titular"), det=li.querySelector("p");
+      if(tit && det && !li.classList.contains("plegable")){
+        li.classList.add("plegable"); det.hidden=true;
+        tit.setAttribute("role","button"); tit.tabIndex=0; tit.setAttribute("aria-expanded","false");
+        var abrir=function(){var ab=det.hidden; det.hidden=!ab; tit.setAttribute("aria-expanded",String(ab)); li.classList.toggle("abierta",ab);};
+        tit.addEventListener("click",abrir);
+        tit.addEventListener("keydown",function(e){if(e.key==="Enter"||e.key===" "){e.preventDefault();abrir();}});
+      }
+    });
+    guardarVistos(vistos);
+    pintarFiltros(cuenta);
+    aplicarFiltro();
+    tiempoRelativo();
+  }
+  function pintarFiltros(cuenta){
+    var caja=document.getElementById("filtros"); if(!caja) return;
+    var fe=document.querySelector("#contenido .fecha"); if(fe && fe.nextElementSibling!==caja) fe.after(caja);
+    caja.innerHTML="";
+    if(cuenta.todo<2){caja.hidden=true;return;} caja.hidden=false;
+    ["todo","macro","sector","antioquia","opinion","mundo"].forEach(function(k){
+      if(!cuenta[k]) return;
+      var b=document.createElement("button"); b.type="button"; b.className="chip c-"+k+(k===filtroActual?" activo":"");
+      b.innerHTML='<span></span><b>'+cuenta[k]+'</b>'; b.firstChild.textContent=NOMBRE[k];
+      b.setAttribute("aria-pressed",String(k===filtroActual));
+      b.addEventListener("click",function(){filtroActual=k;pintarFiltros(cuenta);aplicarFiltro();});
+      caja.appendChild(b);
+    });
+  }
+  function aplicarFiltro(){
+    document.querySelectorAll("#contenido li").forEach(function(li){li.hidden=!(filtroActual==="todo"||li.dataset.grupo===filtroActual);});
+  }
+  var MESES={enero:0,febrero:1,marzo:2,abril:3,mayo:4,junio:5,julio:6,agosto:7,septiembre:8,setiembre:8,octubre:9,noviembre:10,diciembre:11};
+  function tiempoRelativo(){
+    var f=document.querySelector("#contenido .fecha"); if(!f) return;
+    if(!f.dataset.original) f.dataset.original=f.textContent;
+    var t=f.dataset.original.toLowerCase();
+    var m=t.match(/(\d{1,2}) de ([a-záéíóú]+) de (\d{4})/), h=t.match(/(\d{1,2}):(\d{2})\s*([ap])\.?\s*m/);
+    if(!m||!h||MESES[m[2]]===undefined) return;
+    var hh=+h[1]%12+(h[3]==="p"?12:0);
+    var ms=Date.UTC(+m[3],MESES[m[2]],+m[1],hh+5,+h[2]); // Bogotá = UTC-5
+    var min=Math.round((Date.now()-ms)/60000); if(min<0||isNaN(min)) return;
+    var txt=min<1?"hace un momento":min<60?"hace "+min+" min":min<1440?"hace "+Math.round(min/60)+" h":"hace "+Math.round(min/1440)+" día"+(Math.round(min/1440)>1?"s":"");
+    f.innerHTML='<span class="rel"></span><span class="abs"></span>';
+    f.firstChild.textContent="Actualizado "+txt; f.lastChild.textContent=f.dataset.original;
+  }
+  window.pintarEtiquetas=preparar;
+  preparar();
+  setInterval(tiempoRelativo,60000);
 })();
 </script>
 <script>
